@@ -46,18 +46,10 @@ namespace TodoApp.Controllers
             var todo = _repo.GetTodoById(todoId);
             return View(todo);
         }
-        public async Task <IActionResult> Delete(int todoId)
+        public IActionResult Delete(int todoId)
         {
-            Todo todo = await _repo.GetTodoById(todoId);
-            if (todo == null)
-            {
-                return NotFound();
-            }
-            // Delete the room
-            await _repo.DeleteTodo(id);
-            return RedirectToAction("GetAllTodos");
-            //var todolist = _repo.DeleteTodo(todoId);
-            //return RedirectToAction(controllerName: "Todo", actionName: "GetAllTodos"); // reload the getall page it self
+            var todolist = _repo.DeleteTodo(todoId);
+            return RedirectToAction(controllerName: "Todo", actionName: "GetAllTodos"); // reload the getall page it self
         }
 
         [HttpGet]
