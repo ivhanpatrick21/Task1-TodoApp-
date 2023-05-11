@@ -2,7 +2,6 @@
 using Newtonsoft.Json;
 using System.Text;
 using Task1.Repository;
-using Task1.Data;
 using Task1.Models;
 using Task1.ViewModel;
 
@@ -23,23 +22,27 @@ namespace TodoApp.Repository.MsSQL
         public Todo AddTodo(Todo newTodo)
         {
 
-            TodoViewModel todoVM = new TodoViewModel();
-            todoVM.Title = newTodo.Title;
-            todoVM.completed = newTodo.completed;
+            //TodoViewModel todoVM = new TodoViewModel();
+            //todoVM.Title = newTodo.Title;
+            //todoVM.completed = newTodo.completed;
   
 
-            string data = JsonConvert.SerializeObject(todoVM);
+            string data = JsonConvert.SerializeObject(newTodo);
             StringContent content = new StringContent(data, Encoding.UTF8, "application/json");
 
             var response = httpClient.PostAsync(baseURL + "/todos", content).Result;
             if (response.IsSuccessStatusCode)
             {
+               
                 var responsecontent = response.Content.ReadAsStringAsync().Result;
                 Todo todo = JsonConvert.DeserializeObject<Todo>(responsecontent);
-                return todo;
+                response.EnsureSuccessStatusCode();
+                return  todo;
             }
             return null;
         }
+
+      
 
         public Todo DeleteTodo(int todoId)
         {
