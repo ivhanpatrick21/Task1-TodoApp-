@@ -34,10 +34,11 @@ namespace TodoApp.Controllers
                            select todoss;
            
         if (!String.IsNullOrEmpty(searchString))
-       {
-           todolists = todolists.Where(s => s.Title.ToLower().Contains(searchString.Trim().ToLower()));
-            return View(todolists.ToList());
-       }
+            {
+              todolists = todolists.Where(s => s.Title.ToLower().Contains(searchString.Trim().ToLower()));
+              return View(todolists.ToList());
+            }
+ 
             var todolist = _repo.GetAllTodos();
             return View(todolist);
         }
@@ -48,6 +49,7 @@ namespace TodoApp.Controllers
         }
         public IActionResult Delete(int todoId)
         {
+            var todo = _repo.GetTodoById(todoId);
             var todolist = _repo.DeleteTodo(todoId);
             return RedirectToAction(controllerName: "Todo", actionName: "GetAllTodos"); // reload the getall page it self
         }
@@ -55,6 +57,7 @@ namespace TodoApp.Controllers
         [HttpGet]
         public IActionResult Create()
         {
+
             return View();
         }
         [HttpPost]
